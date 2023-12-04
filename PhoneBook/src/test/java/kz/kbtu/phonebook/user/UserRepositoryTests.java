@@ -2,6 +2,7 @@ package kz.kbtu.phonebook.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import kz.kbtu.phonebook.domain.Role;
 import kz.kbtu.phonebook.domain.User;
 import kz.kbtu.phonebook.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -27,4 +28,18 @@ public class UserRepositoryTests {
         assertThat(savedUser).isNotNull();
         assertThat(savedUser.getId()).isGreaterThan(0);
     }
+
+    @Test
+    public void testAssignRoleToUser() {
+        Integer userId = 6;
+        Integer roleId = 1;
+
+        User user = repo.findById(userId).get();
+        user.addRole(new Role(roleId));
+
+        User updatedUser = repo.save(user);
+        assertThat(updatedUser.getRoles()).hasSize(1);
+
+    }
+
 }

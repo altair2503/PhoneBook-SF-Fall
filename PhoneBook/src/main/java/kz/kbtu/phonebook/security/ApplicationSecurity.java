@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -19,6 +20,9 @@ import javax.servlet.http.HttpServletResponse;
 
 
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(
+    prePostEnabled = false, securedEnabled = false, jsr250Enabled = true
+)
 public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 
     @Autowired private UserRepository userRepo;
@@ -27,9 +31,9 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(
-                email -> userRepo.findByEmail(email)
-                        .orElseThrow(
-                                () -> new UsernameNotFoundException("User " + email + " not found.")));
+            email -> userRepo.findByEmail(email)
+                .orElseThrow(
+                    () -> new UsernameNotFoundException("User " + email + " not found.")));
     }
 
     @Bean
@@ -49,8 +53,8 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests()
-                .antMatchers("/auth/login", "/swagger-ui/index.html").permitAll()
-                .anyRequest().authenticated();
+            .antMatchers("/auth/register", "/auth/login", "/swagger-ui/index.html").permitAll()
+            .anyRequest().authenticated();
 
         http.exceptionHandling()
                 .authenticationEntryPoint(

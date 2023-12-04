@@ -7,10 +7,11 @@ import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
+import javax.annotation.security.RolesAllowed;
+import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -20,19 +21,18 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @PostMapping
-    @Operation(summary = "Create user")
-    public ResponseEntity<User> create(@RequestBody User user) {
-        User savedUser = userRepository.save(user);
-        URI userURI = URI.create("/users/" + savedUser.getId());
-
-        return ResponseEntity.created(userURI).body(savedUser);
-    }
-
     @GetMapping
     @Operation(summary = "Get all users")
+    @RolesAllowed({"ROLE_ADMIN", "ROLE_USER"})
     public Page<User> getAllUsers(@ParameterObject Pageable pageable) {
         return userRepository.findAll(pageable);
+    }
+
+    @GetMapping("/search")
+    @Operation(summary = "Search user by name")
+    @RolesAllowed({"ROLE_ADMIN", "ROLE_USER"})
+    public List<User> getAllUsers(@RequestParam(value = "name") String name) {
+        return (List<User>) userRepository.findByFirstNameOrLastName(name, name).stream().toList();
     }
 
 }
