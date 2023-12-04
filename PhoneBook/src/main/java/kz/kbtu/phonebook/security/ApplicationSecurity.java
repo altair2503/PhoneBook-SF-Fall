@@ -1,40 +1,35 @@
 package kz.kbtu.phonebook.security;
 
-import javax.servlet.http.HttpServletResponse;
-
 import kz.kbtu.phonebook.jwt.JwtTokenFilter;
 import kz.kbtu.phonebook.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.*;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.servlet.http.HttpServletResponse;
 
 
-@Configuration
-public class ApplicationSecurity {
+@EnableWebSecurity
+public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 
     @Autowired private UserRepository userRepo;
     @Autowired private JwtTokenFilter jwtTokenFilter;
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new UserDetailsService() {
-
-            @Override
-            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                return userRepo.findByEmail(username)
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(
+                email -> userRepo.findByEmail(email)
                         .orElseThrow(
-                                () -> new UsernameNotFoundException("User " + username + " not found"));
-            }
-        };
+                                () -> new UsernameNotFoundException("User " + email + " not found.")));
     }
 
     @Bean
@@ -42,19 +37,19 @@ public class ApplicationSecurity {
         return new BCryptPasswordEncoder();
     }
 
+    @Override
     @Bean
-    public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration authConfig) throws Exception {
-        return authConfig.getAuthenticationManager();
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
-    @Bean
-    public SecurityFilterChain configure(HttpSecurity http) throws Exception {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests()
-                .antMatchers("/auth/login", "/docs/**", "/users").permitAll()
+                .antMatchers("/auth/login", "/swagger-ui/index.html").permitAll()
                 .anyRequest().authenticated();
 
         http.exceptionHandling()
@@ -68,7 +63,6 @@ public class ApplicationSecurity {
                 );
 
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
-
-        return http.build();
     }
+
 }
