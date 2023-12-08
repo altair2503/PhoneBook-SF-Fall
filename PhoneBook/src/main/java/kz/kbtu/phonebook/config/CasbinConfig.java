@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 public class CasbinConfig {
     @Value("${casbin.model-path}")
     private String modelPath;
-    @Value("${casbin.model-path}")
+    @Value("${casbin.policy-path}")
     private String policyFilePath;
     @Bean
     public Enforcer enforcer() {
