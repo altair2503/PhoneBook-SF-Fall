@@ -2,15 +2,11 @@ package kz.kbtu.phonebook.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import kz.kbtu.phonebook.domain.Role;
-import kz.kbtu.phonebook.domain.User;
-import kz.kbtu.phonebook.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 
 @DataJpaTest

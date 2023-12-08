@@ -1,43 +1,51 @@
 package kz.kbtu.phonebook.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
-import kz.kbtu.phonebook.domain.User;
-import kz.kbtu.phonebook.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.casbin.jcasbin.main.Enforcer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.RolesAllowed;
-import java.net.URI;
-
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/api/v1")
+
 public class AdminController {
-
     @Autowired
-    private UserRepository userRepository;
+    private Enforcer enforcer;
 
-    @PostMapping
-    @Operation(summary = "Create User")
-    @RolesAllowed({"ROLE_ADMIN"})
-    public ResponseEntity<User> create(@RequestBody User user) {
-        User savedUser = userRepository.save(new User(user));
-        URI userURI = URI.create("/admin/" + savedUser.getId());
+    @GetMapping("/users")
+    public String checkPermission() {
+        String sub = "alice";
+        String obj = "data1";
+        String act = "read";
 
-        return ResponseEntity.created(userURI).body(savedUser);
+        boolean authorized = enforcer.enforce(sub, obj, act);
+        if (authorized) {
+            return "Permission granted!";
+        } else {
+            return "Permission denied!";
+        }
     }
-
-    @DeleteMapping
-    @Operation(summary = "Delete User")
-    @RolesAllowed({"ROLE_ADMIN"})
-    public ResponseEntity<String> delete(@RequestParam(value = "id") Integer id) {
-        User user = userRepository.findUserById(id).stream().findFirst().orElse(null);
-        userRepository.delete(user);
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body("Successfully Deleted");
-    }
+//    @PostMapping
+//    @Operation(summary = "Create User")
+//    @RolesAllowed({"ROLE_ADMIN"})
+//    public ResponseEntity<User> create(@RequestBody User user) {
+//        User savedUser = userRepository.save(new User(user));
+//        URI userURI = URI.create("/admin/" + savedUser.getId());
+//
+//        return ResponseEntity.created(userURI).body(savedUser);
+//    }
+//
+//    @DeleteMapping
+//    @Operation(summary = "Delete User")
+//    @RolesAllowed({"ROLE_ADMIN"})
+//    public ResponseEntity<String> delete(@RequestParam(value = "id") Integer id) {
+//        User user = userRepository.findUserById(id).stream().findFirst().orElse(null);
+//        userRepository.delete(user);
+//
+//        return ResponseEntity
+//                .status(HttpStatus.OK)
+//                .body("Successfully Deleted");
+//    }
 
 }
