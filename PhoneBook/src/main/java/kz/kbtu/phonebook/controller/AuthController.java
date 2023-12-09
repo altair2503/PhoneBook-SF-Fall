@@ -3,6 +3,7 @@ package kz.kbtu.phonebook.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import kz.kbtu.phonebook.jwt.JwtTokenUtil;
+import kz.kbtu.phonebook.service.impls.MessageProducer;
 import kz.kbtu.phonebook.models.*;
 import kz.kbtu.phonebook.repo.RolesRepo;
 import kz.kbtu.phonebook.repo.UsersRepo;
@@ -30,6 +31,7 @@ public class AuthController {
     @Autowired UsersRepo userRepository;
     @Autowired UsersRolesRepo usersRolesRepo;
     @Autowired RolesRepo rolesRepo;
+    @Autowired private MessageProducer messageProducer;
 
 
     @PostMapping("/login")
@@ -59,7 +61,7 @@ public class AuthController {
         URI userURI = URI.create("/auth/register/" + savedUser.getId());
 
         usersRolesRepo.save(new UserRoles(savedUser, rolesRepo.findById(1).stream().findFirst().orElse(null)));
-
+        messageProducer.sendMessage("my-topic", savedUser.toString());
         return ResponseEntity.created(userURI).body(savedUser);
     }
 
