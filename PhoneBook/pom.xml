@@ -97,6 +97,15 @@
             <artifactId>jakarta.validation-api</artifactId>
             <version>3.0.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>5.5.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -106,9 +115,9 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>6.5.7</version>
                 <configuration>
-                    <url>jdbc:postgresql://localhost:5432/postgres</url>
+                    <url>jdbc:postgresql://localhost:5432/phonebook</url>
                     <user>postgres</user>
-                    <password>tatosu94</password>
+                    <password>12345678</password>
                 </configuration>
             </plugin>
             <plugin>

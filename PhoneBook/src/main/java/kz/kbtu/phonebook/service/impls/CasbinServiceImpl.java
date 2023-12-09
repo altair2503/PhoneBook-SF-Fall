@@ -8,9 +8,12 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CasbinServiceImpl implements CasbinService {
+
     private final Enforcer enforcer;
+
     @Override
     public Boolean checkAuthorize(String sub, String obj, String act) {
         return enforcer.enforce(sub, obj, act);
     }
+
 }

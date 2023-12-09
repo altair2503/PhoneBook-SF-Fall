@@ -1,7 +1,5 @@
-p, alice, data1, read
-p, bob, data2, write
-p, admin, data1, read
-p, admin, data1, write
-g, alice, user
-g, bob, user
-g, admin, admin
+p, ROLE_ADMIN, user, delete
+p, ROLE_ADMIN, users, read
+p, ROLE_USER_READER, users, read
+p, ROLE_ADMIN, search, read
+p, ROLE_USER_READER, search, read

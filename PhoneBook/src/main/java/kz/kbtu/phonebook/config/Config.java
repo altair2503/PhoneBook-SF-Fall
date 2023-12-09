@@ -14,6 +14,7 @@ import java.sql.SQLException;
 
 @Configuration
 public class Config {
+
     @Value("${spring.datasource.url}")
     private String databaseUrl;
 
@@ -33,8 +34,7 @@ public class Config {
     private int prepStmtCacheSqlLimit;
     @Value("${spring.flyway.locations}")
     private String locations;
-    @Value("${spring.flyway.schemasName}")
-    private String schemasName;
+
     @Bean
     public HikariDataSource dataSource() {
         HikariConfig config = new HikariConfig();
@@ -46,18 +46,20 @@ public class Config {
         config.addDataSourceProperty("prepStmtCacheSqlLimit", String.valueOf(prepStmtCacheSqlLimit));
         return new HikariDataSource(config);
     }
+
     @Bean
     public Connection getConnection() throws SQLException {
         return dataSource().getConnection();
     }
+
     @Bean
     public Flyway flywayMigrate(){
         Flyway flyway = Flyway.configure()
                 .dataSource(dataSource())
-                .schemas(schemasName)
                 .locations(locations)
                 .load();
         flyway.migrate();
         return flyway;
     }
+
 }
