@@ -47,6 +47,8 @@ public class AuthController {
 
             AuthResponse response = new AuthResponse(user.getEmail(), accessToken);
 
+            messageProducer.sendMessage("my-topic", response.toString());
+
             return ResponseEntity.ok().body(response);
 
         } catch(BadCredentialsException ex) {

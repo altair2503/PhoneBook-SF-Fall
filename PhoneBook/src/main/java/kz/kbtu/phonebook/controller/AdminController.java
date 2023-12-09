@@ -8,6 +8,7 @@ import kz.kbtu.phonebook.repo.RolesRepo;
 import kz.kbtu.phonebook.repo.UsersRepo;
 import kz.kbtu.phonebook.repo.UsersRolesRepo;
 import kz.kbtu.phonebook.service.impls.CasbinServiceImpl;
+import kz.kbtu.phonebook.service.impls.MessageProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +21,11 @@ import java.util.HashMap;
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
+
     @Autowired private UsersRepo usersRepo;
     @Autowired private JwtTokenFilter jwtTokenFilter;
     @Autowired private CasbinServiceImpl casbinService;
-
+    @Autowired private MessageProducer messageProducer;
 
     @DeleteMapping("/users/{id}")
     @Operation(summary = "Delete User")
@@ -38,8 +40,8 @@ public class AdminController {
                         .body("Not found it");
             }
 
-
             usersRepo.delete(user);
+            messageProducer.sendMessage("my-topic", "User successfully deleted");
 
             return ResponseEntity
                     .status(HttpStatus.OK)

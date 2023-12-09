@@ -3,3 +3,5 @@ p, ROLE_ADMIN, users, read
 p, ROLE_USER_READER, users, read
 p, ROLE_ADMIN, search, read
 p, ROLE_USER_READER, search, read
+p, ROLE_ADMIN, user, update
+p, ROLE_USER_READER, user, update
