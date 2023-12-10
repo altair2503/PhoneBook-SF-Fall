@@ -119,9 +119,9 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>6.5.7</version>
                 <configuration>
-                    <url>jdbc:postgresql://localhost:5432/phonebook</url>
+                    <url>jdbc:postgresql://localhost:5432/postgres</url>
                     <user>postgres</user>
-                    <password>12345678</password>
+                    <password>tatosu94</password>
                 </configuration>
             </plugin>
             <plugin>
