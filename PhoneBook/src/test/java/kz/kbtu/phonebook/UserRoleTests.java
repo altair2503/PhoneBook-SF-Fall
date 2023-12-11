@@ -1,10 +1,10 @@
 package kz.kbtu.phonebook;
 
+import kz.kbtu.phonebook.models.User;
 import kz.kbtu.phonebook.models.UserRoles;
-import kz.kbtu.phonebook.models.Users;
-import kz.kbtu.phonebook.repo.RolesRepo;
-import kz.kbtu.phonebook.repo.UsersRepo;
-import kz.kbtu.phonebook.repo.UsersRolesRepo;
+import kz.kbtu.phonebook.repository.RoleRepository;
+import kz.kbtu.phonebook.repository.UserRepository;
+import kz.kbtu.phonebook.repository.UserRoleRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -16,24 +16,26 @@ import org.springframework.util.Assert;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Rollback(false)
-public class UserRolesTests {
+public class UserRoleTests {
 
-    @Autowired private UsersRepo usersRepo;
-    @Autowired UsersRolesRepo usersRolesRepo;
-    @Autowired RolesRepo rolesRepo;
+    @Autowired private UserRepository userRepository;
+    @Autowired
+    UserRoleRepository userRoleRepository;
+    @Autowired
+    RoleRepository roleRepository;
 
     @Test
     public void testAssignRoleToUser() {
-        Users user = usersRepo.findById(3).get();
+        User user = userRepository.findById(3).get();
 
-        usersRolesRepo.save(
+        userRoleRepository.save(
             new UserRoles(
                 user,
-                rolesRepo.findById(1).stream().findFirst().orElse(null)
+                roleRepository.findById(1).stream().findFirst().orElse(null)
             )
         );
 
-        Assert.notEmpty(usersRolesRepo.findAll().stream().toList(), "Users Roles is not empty");
+        Assert.notEmpty(userRoleRepository.findAll().stream().toList(), "Users Roles is not empty");
     }
 
 }

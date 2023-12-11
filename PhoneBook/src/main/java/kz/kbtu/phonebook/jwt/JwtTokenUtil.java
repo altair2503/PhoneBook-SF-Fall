@@ -2,7 +2,6 @@ package kz.kbtu.phonebook.jwt;
 
 import io.jsonwebtoken.*;
 import kz.kbtu.phonebook.models.UserRoles;
-import kz.kbtu.phonebook.models.Users;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,8 +9,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+
 @Component
 public class JwtTokenUtil {
+
     private static final long EXPIRE_DURATION = 24 * 60 * 60 * 1000; // 24 hour
 
     @Value("${app.jwt.secret}")
@@ -19,12 +20,12 @@ public class JwtTokenUtil {
 
     public String generateAccessToken(UserRoles userRoles) {
         return Jwts.builder()
-                .setSubject(String.format("%s,%s,%s", userRoles.getUser().getId(), userRoles.getUser().getEmail(), userRoles.getRole().getName()))
-                .setIssuer("Spring")
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRE_DURATION))
-                .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
-                .compact();
+            .setSubject(String.format("%s,%s,%s", userRoles.getUser().getId(), userRoles.getUser().getEmail(), userRoles.getRole().getName()))
+            .setIssuer("Spring")
+            .setIssuedAt(new Date())
+            .setExpiration(new Date(System.currentTimeMillis() + EXPIRE_DURATION))
+            .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
+            .compact();
     }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtTokenUtil.class);
@@ -33,15 +34,15 @@ public class JwtTokenUtil {
         try {
             Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
             return true;
-        } catch (ExpiredJwtException ex) {
+        } catch(ExpiredJwtException ex) {
             LOGGER.error("JWT expired", ex.getMessage());
-        } catch (IllegalArgumentException ex) {
+        } catch(IllegalArgumentException ex) {
             LOGGER.error("Token is null, empty or only whitespace", ex.getMessage());
-        } catch (MalformedJwtException ex) {
+        } catch(MalformedJwtException ex) {
             LOGGER.error("JWT is invalid", ex);
-        } catch (UnsupportedJwtException ex) {
+        } catch(UnsupportedJwtException ex) {
             LOGGER.error("JWT is not supported", ex);
-        } catch (SignatureException ex) {
+        } catch(SignatureException ex) {
             LOGGER.error("Signature validation failed");
         }
 
@@ -54,8 +55,8 @@ public class JwtTokenUtil {
 
     private Claims parseClaims(String token) {
         return Jwts.parser()
-                .setSigningKey(SECRET_KEY)
-                .parseClaimsJws(token)
-                .getBody();
+            .setSigningKey(SECRET_KEY)
+            .parseClaimsJws(token)
+            .getBody();
     }
 }

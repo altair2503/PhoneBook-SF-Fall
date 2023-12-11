@@ -1,6 +1,6 @@
 package kz.kbtu.phonebook.jwt;
 
-import kz.kbtu.phonebook.models.Users;
+import kz.kbtu.phonebook.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +20,7 @@ import java.util.HashMap;
 
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
+
     @Autowired
     private JwtTokenUtil jwtUtil;
 
@@ -47,10 +48,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     private boolean hasAuthorizationBearer(HttpServletRequest request) {
         String header = request.getHeader("Authorization");
-        if (ObjectUtils.isEmpty(header) || !header.startsWith("Bearer")) {
+        if(ObjectUtils.isEmpty(header) || !header.startsWith("Bearer")) {
             return false;
         }
-
         return true;
     }
 
@@ -73,7 +73,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     }
 
     private UserDetails getUserDetails(String token) {
-        Users userDetails = new Users();
+        User userDetails = new User();
         String[] jwtSubject = jwtUtil.getSubject(token).split(",");
 
         userDetails.setId(Long.parseLong(jwtSubject[0]));

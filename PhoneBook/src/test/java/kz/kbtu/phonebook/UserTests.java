@@ -1,7 +1,7 @@
 package kz.kbtu.phonebook;
 
-import kz.kbtu.phonebook.models.Users;
-import kz.kbtu.phonebook.repo.UsersRepo;
+import kz.kbtu.phonebook.models.User;
+import kz.kbtu.phonebook.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -13,14 +13,14 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Rollback(false)
-public class UsersTests {
+public class UserTests {
 
-    @Autowired private UsersRepo repo;
+    @Autowired private UserRepository repo;
 
     @Test
     public void testCreateUser() {
-        Users newUser = new Users("Manarbeku", "123456", "manarbek1@kbtu.kz", "874560565165");
-        Users savedUser = repo.save(newUser);
+        User newUser = new User("Manarbeku", "123456", "manarbek1@kbtu.kz", "874560565165");
+        User savedUser = repo.save(newUser);
 
         assertThat(savedUser).isNotNull();
         assertThat(savedUser.getId()).isGreaterThan(0);

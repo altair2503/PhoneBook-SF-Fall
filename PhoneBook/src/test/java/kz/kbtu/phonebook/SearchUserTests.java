@@ -1,7 +1,7 @@
 package kz.kbtu.phonebook;
 
-import kz.kbtu.phonebook.models.Users;
-import kz.kbtu.phonebook.repo.UsersRepo;
+import kz.kbtu.phonebook.models.User;
+import kz.kbtu.phonebook.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -16,16 +16,16 @@ import java.util.Optional;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Rollback(false)
-public class SearchUsersTests {
+public class SearchUserTests {
 
-    @Autowired private UsersRepo repo;
+    @Autowired private UserRepository repo;
 
     @Test
     public void testSearchUsersByPhoneOrUsername() {
         String phone = "87056524585";
         String username = "Manarbek";
 
-        Optional<Users> usersList = repo.findUsersByUsernameOrPhone(phone, phone);
+        Optional<User> usersList = repo.findUsersByUsernameOrPhone(phone, phone);
 
         Assert.notEmpty(Collections.singleton(usersList), "UsersList is not empty");
         System.out.println(usersList);
