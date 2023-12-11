@@ -32,6 +32,7 @@ public class Config {
 
     @Value("${spring.datasource.hikari.prepStmtCacheSqlLimit}")
     private int prepStmtCacheSqlLimit;
+
     @Value("${spring.flyway.locations}")
     private String locations;
 
@@ -55,9 +56,9 @@ public class Config {
     @Bean
     public Flyway flywayMigrate(){
         Flyway flyway = Flyway.configure()
-                .dataSource(dataSource())
-                .locations(locations)
-                .load();
+            .dataSource(dataSource())
+            .locations(locations)
+            .load();
         flyway.migrate();
         return flyway;
     }

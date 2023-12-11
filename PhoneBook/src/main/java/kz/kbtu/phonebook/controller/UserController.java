@@ -22,6 +22,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/all")
+    @Operation(summary = "Get all users")
     public Page<User> getAllUsers(@ParameterObject Pageable pageable, HttpServletRequest request) {
         return userService.getAllUsers(pageable, request);
     }
