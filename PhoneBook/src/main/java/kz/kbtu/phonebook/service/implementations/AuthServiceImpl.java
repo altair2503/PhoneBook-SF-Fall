@@ -60,8 +60,8 @@ public class AuthServiceImpl implements AuthService {
             throw new UserNotFoundException("User with this email already exists");
         }
 
-        User savedUser = userRepository.save(user);
-        if(savedUser == null){
+        User savedUser = userRepository.save(new User(user));
+        if(savedUser==null) {
             throw new CustomBadCredentialsException("User was not saved");
         }
 
