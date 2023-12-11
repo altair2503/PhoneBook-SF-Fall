@@ -55,7 +55,7 @@ public class AuthServiceImpl implements AuthService {
         AuthResponse response = new AuthResponse(user.getEmail(), accessToken);
         kafkaService.sendMessage("my-topic", response.toString());
 
-        logger.info("User logged: " + accessToken);
+//        logger.info("User logged: " + accessToken);
 
         return response;
     }
