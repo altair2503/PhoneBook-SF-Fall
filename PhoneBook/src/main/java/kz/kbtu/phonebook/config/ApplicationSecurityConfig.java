@@ -54,12 +54,11 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests()
         .antMatchers("/auth/register",
-                "/auth/login",
-                "/api-docs/**",
-                "/swagger-ui/**",
-                "/swagger-ui.html",
-                "/swagger-resources/**",
-                "/configuration/**")
+            "/auth/login",
+            "/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-ui.html"
+        )
         .permitAll();
 
         http.exceptionHandling()

@@ -64,6 +64,7 @@ public class UserServiceImpl implements UserService {
                 if(user.getPassword() != null) updatedUser.setPassword(user.getPassword());
                 if(user.getEmail() != null) updatedUser.setEmail(user.getEmail());
                 if(user.getPhone() != null) updatedUser.setPhone(user.getPhone());
+                userRepository.save(updatedUser);
                 kafkaService.sendMessage("my-topic", updatedUser.toString());
                 return true;
             }
