@@ -2,7 +2,7 @@ package kz.kbtu.phonebook.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import kz.kbtu.phonebook.models.Users;
+import kz.kbtu.phonebook.models.User;
 import kz.kbtu.phonebook.service.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.api.annotations.ParameterObject;
@@ -22,7 +22,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/all")
-    public Page<Users> getAllUsers(@ParameterObject Pageable pageable, HttpServletRequest request) {
+    public Page<User> getAllUsers(@ParameterObject Pageable pageable, HttpServletRequest request) {
         return userService.getAllUsers(pageable, request);
     }
 
@@ -34,11 +34,11 @@ public class UserController {
 
     @PutMapping("/update/{id}")
     @Operation(summary = "Update user data")
-    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody Users user, HttpServletRequest request) {
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody User user, HttpServletRequest request) {
         if(userService.updateUser(id , user , request)){
-            return ResponseEntity.ok("User was updated");
+            return ResponseEntity.ok().body("User was updated");
         }
-        return ResponseEntity.ok("User was not updated");
+        return ResponseEntity.ok().body("User was not updated");
     }
 
 }

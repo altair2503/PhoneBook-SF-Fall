@@ -1,7 +1,7 @@
 package kz.kbtu.phonebook.config;
 
 import kz.kbtu.phonebook.jwt.JwtTokenFilter;
-import kz.kbtu.phonebook.repo.UsersRepo;
+import kz.kbtu.phonebook.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 )
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired private UsersRepo userRepo;
+    @Autowired private UserRepository userRepo;
     @Autowired private JwtTokenFilter jwtTokenFilter;
 
     @Override
@@ -54,12 +54,12 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
             .antMatchers("/auth/register",
-                    "/auth/login",
-                    "/api-docs/**",
-                    "/swagger-ui/**",
-                    "/swagger-ui.html",
-                    "/swagger-resources/**",
-                    "/configuration/**")
+                "/auth/login",
+                "/api-docs/**",
+                "/swagger-ui/**",
+                "/swagger-ui.html",
+                "/swagger-resources/**",
+                "/configuration/**")
             .permitAll()
             .anyRequest()
             .authenticated();

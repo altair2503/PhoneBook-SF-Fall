@@ -5,13 +5,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UsersRolesId implements Serializable {
+public class UserRoleId implements Serializable {
     private Long user;
     private Long role;
-
 }

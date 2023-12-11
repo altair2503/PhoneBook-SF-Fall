@@ -14,17 +14,17 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@IdClass(UsersRolesId.class)
+@IdClass(UserRoleId.class)
 public class UserRoles implements Serializable {
 
     @Id
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private Users user;
+    private User user;
 
     @Id
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "role_id", referencedColumnName = "id")
-    private Roles role;
+    private Role role;
 
 }

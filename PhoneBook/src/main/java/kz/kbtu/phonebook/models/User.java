@@ -2,7 +2,6 @@ package kz.kbtu.phonebook.models;
 
 import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -13,7 +12,7 @@ import java.util.Collection;
 @Entity
 @Table(name = "users")
 @Data
-public class Users implements UserDetails {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,11 +31,9 @@ public class Users implements UserDetails {
     @Column(name = "phone", unique = true)
     private String phone;
 
-    public Users() {
+    public User() { }
 
-    }
-
-    public Users(String username, String password, String email, String phone) {
+    public User(String username, String password, String email, String phone) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         this.username = username;
         this.password = passwordEncoder.encode(password);
@@ -44,7 +41,7 @@ public class Users implements UserDetails {
         this.phone = phone;
     }
 
-    public Users(Users user) {
+    public User(User user) {
         this(user.username, user.password, user.email, user.phone);
     }
 
@@ -73,21 +70,9 @@ public class Users implements UserDetails {
         return null;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
     @Override
     public String toString() {
-        return "Users{" +
+        return "User {" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +

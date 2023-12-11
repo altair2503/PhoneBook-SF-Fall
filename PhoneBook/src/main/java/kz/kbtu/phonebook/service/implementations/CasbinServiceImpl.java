@@ -1,4 +1,4 @@
-package kz.kbtu.phonebook.service.impls;
+package kz.kbtu.phonebook.service.implementations;
 
 import kz.kbtu.phonebook.service.interfaces.CasbinService;
 import lombok.RequiredArgsConstructor;

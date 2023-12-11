@@ -1,7 +1,7 @@
 package kz.kbtu.phonebook;
 
-import kz.kbtu.phonebook.models.Users;
-import kz.kbtu.phonebook.repo.UsersRepo;
+import kz.kbtu.phonebook.models.User;
+import kz.kbtu.phonebook.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -15,11 +15,11 @@ import org.springframework.util.Assert;
 @Rollback(false)
 public class AdminTests {
 
-    @Autowired private UsersRepo repo;
+    @Autowired private UserRepository repo;
 
     @Test
     public void testDeleteUser() {
-        Users user = repo.findById(1).stream().findFirst().orElse(null);
+        User user = repo.findById(1).stream().findFirst().orElse(null);
         repo.delete(user);
 
         Assert.isNull(repo.findById(1).stream().findFirst().orElse(null), "User successfully deleted");
