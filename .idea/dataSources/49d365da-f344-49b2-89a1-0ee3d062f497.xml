@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="postgres@localhost">
-  <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.45">
+  <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.49">
     <root id="1">
       <DateStyle>mdy</DateStyle>
       <IntrospectionStateNumber>6526</IntrospectionStateNumber>
@@ -4273,12 +4273,16 @@ false Zulu
     <sequence id="273" parent="271" name="roles_id_seq">
       <DasType>integer|0s</DasType>
       <ObjectId>29138</ObjectId>
+      <SequenceIdentity>1</SequenceIdentity>
+      <StartValue>1</StartValue>
       <StateNumber>6521</StateNumber>
       <OwnerName>postgres</OwnerName>
     </sequence>
     <sequence id="274" parent="271" name="users_id_seq">
       <DasType>bigint|0s</DasType>
       <ObjectId>29125</ObjectId>
+      <SequenceIdentity>1</SequenceIdentity>
+      <StartValue>1</StartValue>
       <StateNumber>6521</StateNumber>
       <OwnerName>postgres</OwnerName>
     </sequence>
@@ -4548,9 +4552,9 @@ false Zulu
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>29150</ObjectId>
       <OnDelete>cascade</OnDelete>
-      <RefColNames>id</RefColNames>
-      <RefColPositions>1</RefColPositions>
       <StateNumber>6521</StateNumber>
+      <RefKeyColPositions>1</RefKeyColPositions>
+      <RefKeyColNames>id</RefKeyColNames>
       <RefTableId>29126</RefTableId>
       <RefTableName>users</RefTableName>
       <RefTableKind>table</RefTableKind>
@@ -4560,9 +4564,9 @@ false Zulu
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>29155</ObjectId>
       <OnDelete>cascade</OnDelete>
-      <RefColNames>id</RefColNames>
-      <RefColPositions>1</RefColPositions>
       <StateNumber>6521</StateNumber>
+      <RefKeyColPositions>1</RefKeyColPositions>
+      <RefKeyColNames>id</RefKeyColNames>
       <RefTableId>29139</RefTableId>
       <RefTableName>roles</RefTableName>
       <RefTableKind>table</RefTableKind>
