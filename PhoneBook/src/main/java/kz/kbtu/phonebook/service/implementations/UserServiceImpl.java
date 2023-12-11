@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     public Page<User> getAllUsers(Pageable pageable, HttpServletRequest request) {
         HashMap<String, String> authority = jwtTokenFilter.getUserDetailsByHttpRequest(request);
 
-        if(casbinService.checkAuthorize(authority.get("rule"), "users", "read")) {
+        if(casbinService.checkAuthorize(authority.get("rule"), "user", "read")) {
             return userRepository.findAll(pageable);
         }
         else throw new UserNotFoundException("Users not Found");
@@ -64,6 +64,7 @@ public class UserServiceImpl implements UserService {
                 if(user.getPassword() != null) updatedUser.setPassword(user.getPassword());
                 if(user.getEmail() != null) updatedUser.setEmail(user.getEmail());
                 if(user.getPhone() != null) updatedUser.setPhone(user.getPhone());
+                userRepository.save(updatedUser);
                 kafkaService.sendMessage("my-topic", updatedUser.toString());
                 return true;
             }
