@@ -18,11 +18,9 @@ import org.springframework.util.Assert;
 @Rollback(false)
 public class UserRoleTests {
 
-    @Autowired private UserRepository userRepository;
-    @Autowired
-    UserRoleRepository userRoleRepository;
-    @Autowired
-    RoleRepository roleRepository;
+    @Autowired UserRepository userRepository;
+    @Autowired UserRoleRepository userRoleRepository;
+    @Autowired RoleRepository roleRepository;
 
     @Test
     public void testAssignRoleToUser() {

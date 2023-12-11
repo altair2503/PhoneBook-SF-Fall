@@ -15,7 +15,7 @@ import org.springframework.util.Assert;
 @Rollback(false)
 public class AdminTests {
 
-    @Autowired private UserRepository repo;
+    @Autowired UserRepository repo;
 
     @Test
     public void testDeleteUser() {

@@ -19,7 +19,7 @@ import java.util.Optional;
 @Rollback(false)
 public class SearchUserTests {
 
-    @Autowired private UserRepository repo;
+    @Autowired UserRepository repo;
 
     @Test
     public void testSearchUsersByPhoneOrUsername() {
