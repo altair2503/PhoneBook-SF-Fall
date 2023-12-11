@@ -1,5 +1,6 @@
 package kz.kbtu.phonebook.service.interfaces;
 
+import kz.kbtu.phonebook.dtos.UserDto;
 import kz.kbtu.phonebook.models.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,9 +10,9 @@ import java.util.Optional;
 
 public interface UserService {
 
-    Page<User> getAllUsers(Pageable pageable, HttpServletRequest request);
+    Page<?> getAllUsers(Pageable pageable, HttpServletRequest request);
 
-    Optional<User>  getAllUsersByNameOrPhone(String nameOrPhone, HttpServletRequest request);
+    Optional<?> getAllUsersByNameOrPhone(String nameOrPhone, HttpServletRequest request);
 
     Boolean updateUser(Long id, User user, HttpServletRequest request);
 

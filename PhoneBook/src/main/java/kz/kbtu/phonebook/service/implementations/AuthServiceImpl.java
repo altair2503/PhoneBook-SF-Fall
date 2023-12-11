@@ -13,6 +13,8 @@ import kz.kbtu.phonebook.repository.UserRoleRepository;
 import kz.kbtu.phonebook.service.interfaces.AuthService;
 import kz.kbtu.phonebook.service.interfaces.KafkaService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -34,6 +36,8 @@ public class AuthServiceImpl implements AuthService {
 
     private final KafkaService kafkaService;
 
+    private final Logger logger = LoggerFactory.getLogger(AuthServiceImpl.class);
+
     @Override
     public AuthResponse login(AuthRequest authRequest) {
         Authentication authentication = authManager.authenticate(
@@ -50,6 +54,8 @@ public class AuthServiceImpl implements AuthService {
 
         AuthResponse response = new AuthResponse(user.getEmail(), accessToken);
         kafkaService.sendMessage("my-topic", response.toString());
+
+        logger.info("User logged: " + accessToken);
 
         return response;
     }

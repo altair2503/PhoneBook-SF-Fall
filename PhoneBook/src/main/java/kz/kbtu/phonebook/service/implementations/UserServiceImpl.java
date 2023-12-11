@@ -1,8 +1,10 @@
 package kz.kbtu.phonebook.service.implementations;
 
+import kz.kbtu.phonebook.dtos.UserDto;
 import kz.kbtu.phonebook.exceptions.CustomBadCredentialsException;
 import kz.kbtu.phonebook.exceptions.UserNotFoundException;
 import kz.kbtu.phonebook.jwt.JwtTokenFilter;
+import kz.kbtu.phonebook.mapper.UserMapper;
 import kz.kbtu.phonebook.models.User;
 import kz.kbtu.phonebook.repository.UserRepository;
 import kz.kbtu.phonebook.service.interfaces.CasbinService;
@@ -17,6 +19,8 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,24 +31,30 @@ public class UserServiceImpl implements UserService {
     private final CasbinService casbinService;
     private final KafkaService kafkaService;
 
+    private final UserMapper userMapper;
+
 
     @Override
-    public Page<User> getAllUsers(Pageable pageable, HttpServletRequest request) {
+    public Page<?> getAllUsers(Pageable pageable, HttpServletRequest request) {
         HashMap<String, String> authority = jwtTokenFilter.getUserDetailsByHttpRequest(request);
 
         if(casbinService.checkAuthorize(authority.get("rule"), "user", "read")) {
-            return userRepository.findAll(pageable);
+            return authority.get("rule").equals("ROLE_ADMIN") ?
+                    userRepository.findAll(pageable)
+                    : userRepository.findAll(pageable).map(userMapper::mapToUserDto);
         }
         else throw new UserNotFoundException("Users not Found");
     }
 
     @Override
-    public Optional<User> getAllUsersByNameOrPhone(String nameOrPhone, HttpServletRequest request) {
+    public Optional<?> getAllUsersByNameOrPhone(String nameOrPhone, HttpServletRequest request) {
         HashMap<String, String> authority = jwtTokenFilter.getUserDetailsByHttpRequest(request);
 
         if(casbinService.checkAuthorize(authority.get("rule"), "search", "read")) {
             if(userRepository.findUsersByUsernameOrPhone(nameOrPhone, nameOrPhone).isPresent()) {
-                return userRepository.findUsersByUsernameOrPhone(nameOrPhone, nameOrPhone);
+                return authority.get("rule").equals("ROLE_ADMIN") ?
+                        userRepository.findUsersByUsernameOrPhone(nameOrPhone, nameOrPhone)
+                        : userRepository.findUsersByUsernameOrPhone(nameOrPhone, nameOrPhone).map(userMapper::mapToUserDto);
             }
             else throw new UserNotFoundException("Users not Found");
         }

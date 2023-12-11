@@ -26,12 +26,12 @@ public class UserRoleTests {
 
     @Test
     public void testAssignRoleToUser() {
-        User user = userRepository.findById(3).get();
+        User user = userRepository.findById(5).get();
 
         userRoleRepository.save(
             new UserRoles(
                 user,
-                roleRepository.findById(1).stream().findFirst().orElse(null)
+                roleRepository.findById(2).stream().findFirst().orElse(null)
             )
         );
 

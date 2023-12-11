@@ -19,7 +19,7 @@ public class UserTests {
 
     @Test
     public void testCreateUser() {
-        User newUser = new User("Manarbeku", "123456", "manarbek1@kbtu.kz", "874560565165");
+        User newUser = new User("Manarbeku", "123456", "manarbek@kbtu.kz", "874560565165");
         User savedUser = repo.save(newUser);
 
         assertThat(savedUser).isNotNull();

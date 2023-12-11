@@ -2,6 +2,7 @@ package kz.kbtu.phonebook.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import kz.kbtu.phonebook.dtos.UserDto;
 import kz.kbtu.phonebook.models.User;
 import kz.kbtu.phonebook.service.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
@@ -23,13 +24,13 @@ public class UserController {
 
     @GetMapping("/all")
     @Operation(summary = "Get all users")
-    public Page<User> getAllUsers(@ParameterObject Pageable pageable, HttpServletRequest request) {
+    public Page<?> getAllUsers(@ParameterObject Pageable pageable, HttpServletRequest request) {
         return userService.getAllUsers(pageable, request);
     }
 
     @GetMapping("/search/{nameOrPhone}")
     @Operation(summary = "Search user by name")
-    public ResponseEntity<?> getAllUsers(@PathVariable String nameOrPhone, HttpServletRequest request) {
+    public ResponseEntity<?> searchUser(@PathVariable String nameOrPhone, HttpServletRequest request) {
         return ResponseEntity.ok(userService.getAllUsersByNameOrPhone(nameOrPhone, request));
     }
 
