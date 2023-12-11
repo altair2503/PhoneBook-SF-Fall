@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     public Page<User> getAllUsers(Pageable pageable, HttpServletRequest request) {
         HashMap<String, String> authority = jwtTokenFilter.getUserDetailsByHttpRequest(request);
 
-        if(casbinService.checkAuthorize(authority.get("rule"), "users", "read")) {
+        if(casbinService.checkAuthorize(authority.get("rule"), "user", "read")) {
             return userRepository.findAll(pageable);
         }
         else throw new UserNotFoundException("Users not Found");
