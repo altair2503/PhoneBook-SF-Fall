@@ -33,6 +33,15 @@ public class User implements UserDetails {
 
     public User() { }
 
+    public User(Long id, String username, String password, String email, String phone) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        this.id = id;
+        this.username = username;
+        this.password = passwordEncoder.encode(password);
+        this.email = email;
+        this.phone = phone;
+    }
+
     public User(String username, String password, String email, String phone) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         this.username = username;
